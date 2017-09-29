@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html style="width:100%; height:100%; margin:0; padding:0; font-family: 'Helvetica Neue', Helvetica, sans-serif !important; font-size: 13px;">
+    <head>
+        <meta charset="utf-8">
+        <title>WRAP Mercury TAF Sample</title>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLBsRRbNpGkObvILizh8aWj9KoO20nQiw&libraries=geometry"></script>
+        <script type="text/javascript" src="3rd/js/jquery-1.10.2.min.js"></script>
+ 
+        <script type="text/javascript" src="js/WRAP.DH-1.1.0.0.js"></script>
+        <script type="text/javascript" src="js/WRAP.Geo-1.1.0.0.js"></script>
+        <script type="text/javascript" src="js/WRAP.ASM.js"></script>
+    </head>
+    <body style="width:100%; height:100%; margin:0; padding:0">
+        <div id="map_canvas" style="width:100%; height:100%; margin:0; padding:0"></div>
+
+        <script type="text/javascript">
+            // React Nativeからのイベント取得ハンドラー
+            document.addEventListener('message', function(event) {
+                var func = funcs[event.data];
+                func();
+            });
+
+            var funcs = {
+                tafOn: function() {
+                    layer.setVisible(true)
+                },
+                tafOff: function() {
+                    layer.setVisible(false)
+                }
+            }
+
+            // Mapの初期画角
+            var initial_lat = 35.65;
+            var initial_lon = 140.045;
+            var initial_zoom = 4;
+
+            var conf_path = "https://pt-wrap01.wni.co.jp/WRAP/hist-data/mobile/pri/conf";     // ローカルの sample_data用コンフィグを用いる
+            
+            // Setup Google Maps
+            var map_canvas = document.getElementById('map_canvas');
+            var g_map = new google.maps.Map(map_canvas, {
+                zoom: initial_zoom,
+                minZoom: 3,
+                center: new google.maps.LatLng(initial_lat, initial_lon),
+                zoomControl: true,
+                mapTypeControl: false,
+                scaleControl: false,
+                streetViewControl: false,
+                draggableCursor: "default",
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+            WRAP.Geo.setGoogleMaps(g_map)
+            
+            // Data
+            WRAP.DH.conf_path = conf_path+"/data";
+            var data = WRAP.DH.addObject("TAF");
+            
+            // Layers
+            var layer = new WRAP.Geo.Layer("TAF");
+            WRAP.Geo.setLayer({
+                upper_layers : [
+                    layer
+                ]
+            });
+
+            // Configure Layers
+            var conf_dir = "https://pt-wrap01.wni.co.jp/WRAP/hist-data/mobile/pri/conf";
+            $.getJSON(conf_dir + '/layer/TAF.json', function() {}).
+                success(function(conf) {
+                    layer.configure(data, conf);
+                }).
+                error(function(jqXHR, textStatus, errorThrown) {
+                    console.log("Layer configuration file load error : " + textStatus);
+                });
+                
+                
+            // Tooltip
+            WRAP.Geo.setInteraction(map_canvas);
+            layer.setTooltip(function(geo, data) {
+                var p = geo && geo.properties;
+                if ( p && data ) {
+                    return "name : "+p.icao+"<br>"
+                         + "bulletin : "+(data.bulletin||"-")+"<br>";
+                }
+            });
+            
+        </script>
+    </body>
+</html>

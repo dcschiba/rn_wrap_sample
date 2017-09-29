@@ -1,0 +1,3 @@
+rootProject.name = 'rn_wrap_sample'
+
+include ':app'
