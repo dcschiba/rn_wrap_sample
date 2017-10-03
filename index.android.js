@@ -11,27 +11,19 @@ import {
   View,
   WebView,
   Button,
+  Text,
 } from 'react-native';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import Screen1 from './src/Screen1';
+import Screen2 from './src/Screen2';
 
 export default class rn_wrap_sample extends Component {
-  tafOn() {
-    mapview.postMessage('tafOn');
-  }
-  tafOff() {
-    mapview.postMessage('tafOff');
-  }
-
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Button onPress={this.tafOn} title='ON' />
-        <Button onPress={this.tafOff} title='OFF' />
-        <WebView
-          style={{ flex: 1, marginTop: 20 }}
-          source={{ uri: 'file:///android_asset/taf.html' }}
-          ref={webview => {mapview = webview;}}
-        />
-      </View>
+      <ScrollableTabView renderTabBar={() => <DefaultTabBar />}>
+        <Screen1 tabLabel='WRAPJS' />
+        <Screen2 tabLabel='OFFLINE' />
+      </ScrollableTabView>
     );
   }
 }
@@ -39,10 +31,6 @@ export default class rn_wrap_sample extends Component {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
   },
 });
 
