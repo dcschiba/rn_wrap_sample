@@ -5,14 +5,17 @@ import {
   View,
   WebView,
   Button,
+  Vibration,
 } from 'react-native';
 
 export default class Screen1 extends Component {
   tafOn() {
     mapview.postMessage('tafOn');
+    Vibration.vibrate();
   }
   tafOff() {
     mapview.postMessage('tafOff');
+    Vibration.vibrate();
   }
 
   render() {
@@ -22,7 +25,7 @@ export default class Screen1 extends Component {
           <Button onPress={this.tafOff} title='OFF' />
           <WebView
             style={{ flex: 1, marginTop: 5 }}
-            source={{ uri: 'http://www.yahoo.co.jp' }}
+            source={{ uri: 'https://pt-wrap01.wni.co.jp/WRAP/hist-data/mobile/rn/webview/taf.html' }}
             ref={webview => { mapview = webview; }}
           />
         </View>

@@ -23,7 +23,7 @@ export default class Screen2 extends Component {
     fetch('https://pt-wrap01.wni.co.jp/WRAP/wrap-pri/data/WX_JP_Lightning_Latest/latest70min.json')
       .then((response) => response.json())
       .then((json) => {
-        const path = RNFS.DocumentDirectoryPath + '/data.json';
+        const path = RNFS.TemporaryDirectoryPath + '/data.json';
         RNFS.writeFile(path, JSON.stringify(json), 'utf8')
           .then((success) => {
             Alert.alert('CREATE SUCCESS');
@@ -38,7 +38,7 @@ export default class Screen2 extends Component {
   }
 
   readFile() {
-    const path = RNFS.DocumentDirectoryPath + '/data.json';
+    const path = RNFS.TemporaryDirectoryPath + '/data.json';
     RNFS.readFile(path)
       .then((data) => {
         // console.log(data);
@@ -51,7 +51,7 @@ export default class Screen2 extends Component {
   }
 
   deleteFile() {
-    const path = RNFS.DocumentDirectoryPath + '/data.json';
+    const path = RNFS.TemporaryDirectoryPath + '/data.json';
     RNFS.unlink(path)
       .then(() => {
         this.setState({ data: '' });
