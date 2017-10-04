@@ -20,15 +20,15 @@ export default class Screen1 extends Component {
 
   render() {
     return (
-        <View style={{ flex: 1 }}>
-          <Button onPress={this.tafOn} title='ON' />
-          <Button onPress={this.tafOff} title='OFF' />
-          <WebView
-            style={{ flex: 1, marginTop: 5 }}
-            source={{ uri: 'https://pt-wrap01.wni.co.jp/WRAP/hist-data/mobile/rn/webview/taf.html' }}
-            ref={webview => { mapview = webview; }}
-          />
-        </View>
+      <View style={{ flex: 1 }}>
+        <Button onPress={this.tafOn} title='ON' />
+        <Button onPress={this.tafOff} title='OFF' />
+        <WebView
+          style={{ flex: 1, marginTop: 5 }}
+          source={{ uri: 'https://pt-wrap01.wni.co.jp/WRAP/hist-data/mobile/rn/webview/taf.html' }}
+          ref={webview => { mapview = webview; }}
+        />
+      </View>
     );
   }
 }

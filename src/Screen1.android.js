@@ -5,14 +5,17 @@ import {
   View,
   WebView,
   Button,
+  Vibration,
 } from 'react-native';
 
 export default class Screen1 extends Component {
   tafOn() {
     mapview.postMessage('tafOn');
+    Vibration.vibrate();
   }
   tafOff() {
     mapview.postMessage('tafOff');
+    Vibration.vibrate();
   }
 
   render() {
