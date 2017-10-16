@@ -1,23 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  View,
-  WebView,
-  Button,
-  Text,
 } from 'react-native';
+import PushNotification from 'react-native-push-notification';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Screen1 from './src/Screen1';
 import Screen2 from './src/Screen2';
 
 export default class rn_wrap_sample extends Component {
+  componentDidMount() {
+    PushNotification.configure({
+
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
+
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
+
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+
+    });
+  }
+
   render() {
     return (
       <ScrollableTabView renderTabBar={() => <DefaultTabBar />}>
@@ -27,11 +40,5 @@ export default class rn_wrap_sample extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});
 
 AppRegistry.registerComponent('rn_wrap_sample', () => rn_wrap_sample);
